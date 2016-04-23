@@ -31,12 +31,11 @@ function getData(lat, lon, timezone) {
     xhttp.onreadystatechange = function () {
       if (xhttp.readyState == 4 && xhttp.status == 200) {
         var data = xhttp.responseText;
-        var d = new Date();
-        var date = d.getMonth() + "/" + d.getDate() + "/" + d.getFullYear() + "," + d.getHours() + ":00:00";
+        var date = month + "/" + day + "/" + year + "," + d.getHours() + ":00:00";
         data = data.split("\n");
-        for (line in data) {
-          if (data[line].search(date) !== -1) {
-            resolve(data[line].split(",").slice(2));
+        for (var index in data) {
+          if (data[index].search(date) !== -1) {
+            resolve(data[index].split(",").slice(2));
           }
         }
       }
