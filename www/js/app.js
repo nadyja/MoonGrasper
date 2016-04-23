@@ -94,16 +94,16 @@ angular.module('starter', ['ionic'])
 
     function getArrowAngle(delta) {
         var dir = {
-            x: -1,
-            y: -1
+            x: false,
+            y: false
         }
         if (delta.v == 0) delta.v = 1;
         if (delta.h < 0) {
-            dir.y = 1;
+            dir.y = true;
             delta.h = -delta.h;
         }
         if (delta.v < 0) {
-            dir.x = 1;
+            dir.x = true;
             delta.v = -delta.v;
         }
         var radians = Math.atan(delta.h / delta.v);
