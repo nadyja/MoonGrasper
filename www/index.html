@@ -18,7 +18,7 @@
     <script src="js/app.js"></script>
 </head>
 
-<body ng-app="starter">
+<body ng-app="starter" style="background: transparent">
     <ion-pane>
         <ion-header-bar class="bar-stable">
             <h1 class="title">LunaGrab</h1>
@@ -26,13 +26,15 @@
         <div class="finder">
             <div class="moon"></div>
             <div class="finder-overlay">
-                <i class="ion-chevron-up" style="transform: rotate(25deg) translate(0, -80px); "></i>
+                <i id="arrow" class="ion-chevron-up" style="transform: rotate(25deg) translate(0, -80px); "></i>
                 <div class="area"></div>
             </div>
             <div class="finder-contents">
                 <h3>Follow the arrows to find the moon</h3>
             </div>
         </div>
+        <div id="debug"></div>
+
         <ion-content>
         </ion-content>
     </ion-pane>
