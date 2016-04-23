@@ -5,23 +5,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <title></title>
-    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
-    -->
-    <!-- ionic/angularjs js -->
+
     <script src="lib/ionic/js/ionic.bundle.js"></script>
-    <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
-    <!-- your app's js -->
     
     <script src="js/app.js"></script>
-    <script src="js/AppCtrl.js"></script>
-    <script src="js/MoonApiService.js"></script>
+    <script src="js/routing.js"></script>
+    <script src="js/services/MoonApi.service.js"></script>
+    <script src="js/services/DeviceApi.service.js"></script>
+    <script src="js/controllers/Main.controller.js"></script>
+    <script src="js/controllers/Search.controller.js"></script>
+    <script src="js/controllers/Found.controller.js"></script>
+
 </head>
 
-<body ng-app="lunagrab" style="background: transparent">
+<body ng-app="MoonGrasper" style="{{backgroundStyle}}">
   
         
 
