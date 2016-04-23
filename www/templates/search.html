@@ -1,18 +1,19 @@
 <div class="finder">
-            <div id="moon" style="{{moonStyle}}"></div>    
-            <div class="finder-overlay">
-                <i id="arrow" class="ion-chevron-up" style="{{arrowStyle}}"></i>
-                <div class="area"></div>
-            </div>
-            <div class="finder-contents">
-                <h3>Follow the arrows to find the moon</h3>
-            </div>
-        </div>
-        <div class="debug">
-            <div>{{debug[0]}}</div>
-            <div>{{debug[1]}}</div>
-            <div>{{debug[2]}}</div>
-            <div>{{debug[3]}}</div>
-            <div>{{debug[4]}}</div>
-
-        </div>
+    <div id="moon" style="{{moonStyle}}"></div>
+    <div class="finder-overlay">
+        <i id="arrow" class="ion-chevron-up" style="{{arrowStyle}}"></i>
+        <div class="area"></div>
+    </div>
+    <div class="finder-contents">
+        <h3>Follow the arrows to find the moon</h3>
+    </div>
+</div>
+<div class="debug">
+    <table style="width: 100%;">
+        <tr ng-repeat="debugItem in debug">
+            <td>{{debugItem[0]}}</td>
+            <td style="text-align: right;">{{debugItem[1] | number:2}}</td>
+            <td style="text-align: right;">{{debugItem[2]| number:2}}</td>
+        </tr>
+    </table>
+</div>
