@@ -1,20 +1,36 @@
-angular.module('lunagrab.controllers', []).controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+angular.module('lunagrab.controllers', []).controller('AppCtrl', function($scope, $ionicModal, $timeout, MoonApi) {
 
-	$scope.orientation={}
-	$scope.moon = {
+    $scope.orientation = {}
+    $scope.moon = {
         compass: 0,
         tilt: 90
     }
-	$scope.arrowStyle="transform: rotate(0deg) translate(0, -70px); ";
-	$scope.moonStyle="";
-	$scope.debug={};
+    $scope.arrowStyle = "transform: rotate(0deg) translate(0, -70px); ";
+    $scope.moonStyle = "";
+    $scope.debug = {};
+    $scope.init = function() {
 
- updatePosition({
-            tilt: 87,
-            compass: 3,
-            lat: 0,
-            lng: 0
+        getMoonPosition(52, 14, 2).then(function(result) {
+        	
+            $scope.moon = {
+                tilt: result[0],
+                compass: result[1]
+            }
+              $scope.moon = {
+        compass: 0,
+        tilt: 90
+    }
+            debug('moon position (tilt,compass): ' + moon.tilt + "   " + moon.compass, 4);
+            updatePosition({
+                tilt: 87,
+                compass: 3,
+                lat: 0,
+                lng: 0
+            });
         })
+
+    }
+    $scope.init();
 
     function getArrowAngle(delta) {
         var dir = {
@@ -89,7 +105,7 @@ angular.module('lunagrab.controllers', []).controller('AppCtrl', function($scope
             v: pixelsV,
             h: pixelsH
         }
-        debug('moon position (h, v): ' + pixels.h + "   " + pixels.v, 3);
+        debug('moon pixels (h, v): ' + pixels.h + "   " + pixels.v, 3);
 
         return pixels;
     }
@@ -105,6 +121,45 @@ angular.module('lunagrab.controllers', []).controller('AppCtrl', function($scope
 
 
 
+
+
+    function getMoonPosition(lat, lon, timezone) {
+        return MoonApi.getMoonPosition(lat, lon, timezone)
+            .then(function(result) {
+
+                var data = result;
+                var d = new Date();
+                var date = d.getMonth() + "/" + d.getDate() + "/" + d.getFullYear() + "," + d.getHours() + ":00:00";
+                data = data.split("\n");
+                console.log('looking for date'+date);
+                console.log(data);
+                for (line in data) {
+                    if (data[line].search(date) !== -1) {
+					
+                        return (data[line].split(",").slice(2));
+                    }
+                }
+            });
+
+/*
+        var d = new Date();
+        var day = d.getDate();
+        var year = d.getFullYear();
+        var month = d.getMonth();
+        req = 'https://www.nrel.gov/midc/apps/sampa.pl?syear=' + year + '&smonth=' + month + '&sday=' + day + '&eyear=' + year + '&emonth=' + month + '&eday=' + day + '&step=60&stepunit=1&latitude=' + lat + '&longitude=' + lon + '&timezone=' + timezone + '&elev=0&press=835&temp=10&dut1=0.0&deltat=64.797&refract=0.5667&ozone=0.3&pwv=1.5&aod=0.07637&ba=0.85&albedo=0.2&field=3&field=4&field=5&zip=0';
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("get", req, true);
+        xhttp.send();
+        return new Promise(function(resolve, reject) {
+            xhttp.onreadystatechange = function() {
+                if (xhttp.readyState == 4 && xhttp.status == 200) {
+                    var data = xhttp.responseText;
+
+                }
+            };
+        });
+        */
+    }
 
 
 
@@ -140,7 +195,7 @@ angular.module('lunagrab.controllers', []).controller('AppCtrl', function($scope
     }
 
     function debug(txt, position) {
-    	$scope.debug[position]=txt;
+        $scope.debug[position] = txt;
 
         //document.getElementById("debug" + position).innerHTML = txt;
     }
