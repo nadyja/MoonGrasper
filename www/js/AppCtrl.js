@@ -16,10 +16,10 @@ angular.module('lunagrab.controllers', []).controller('AppCtrl', function($scope
                 tilt: parseFloat(result[0]),
                 compass: parseFloat(result[1])
             }
-            debug(0,'moon position (compass, tilt): ',$scope.moon.compass,$scope.moon.tilt);
+            debug(0, 'moon position (compass, tilt): ', $scope.moon.compass, $scope.moon.tilt);
             updatePosition({
-                tilt: 75,
-                compass: 144,
+                tilt: 90,
+                compass: 38,
                 lat: 0,
                 lng: 0
             });
@@ -31,53 +31,60 @@ angular.module('lunagrab.controllers', []).controller('AppCtrl', function($scope
 
 
     function initializeEzar() {
-    	debug(5,'init');
+        debug(5, 'init');
 
-                debug(5,'no device orientation');
-                if (window.DeviceOrientationEvent) {
-                    debug(5,'device orientation present');
-
-
-                    window.addEventListener('deviceorientation', function(eventData) {
-                        // gamma is the left-to-right tilt in degrees, where right is positive
-                        var tiltLR = Math.floor(eventData.gamma);
-
-                        // beta is the front-to-back tilt in degrees, where front is positive
-                        var tiltFB = Math.floor(eventData.beta);
-
-                        // alpha is the compass direction the device is facing in degrees
-                        var dir = Math.floor(eventData.alpha);
-
-                        // call our orientation event handler
-                        $scope.orientation.tilt = tiltFB;
-						$scope.$apply();
-                        doUpdate();
-                        //debug(tiltLR, tiltFB, dir);
-                    }, false);
+        debug(5, 'no device orientation');
+        if (window.DeviceOrientationEvent) {
+            debug(5, 'device orientation present');
 
 
-                }
+            window.addEventListener('deviceorientation', function(eventData) {
+                // gamma is the left-to-right tilt in degrees, where right is positive
+                var tiltLR = Math.floor(eventData.gamma);
+
+                // beta is the front-to-back tilt in degrees, where front is positive
+                var tiltFB = Math.floor(eventData.beta);
+
+                // alpha is the compass direction the device is facing in degrees
+                var dir = Math.floor(eventData.alpha);
+
+                // call our orientation event handler
+                $scope.orientation.tilt = tiltFB;
+                $scope.$apply();
+                doUpdate();
+                //debug(tiltLR, tiltFB, dir);
+            }, false);
 
 
-
-                setInterval(function() {
-                    navigator.compass.getCurrentHeading(
-                        function(heading) {
-                            var hdng = Math.floor(heading.magneticHeading);
-                            $scope.orientation.compass = hdng;
-                            $scope.$apply();
-                            doUpdate();
-
-                        },
-                        function(err) {
-                            console.log("Compass error", err);
-                            debug(5,err);
-                            ezar.getBackCamera().start();
-                        });
-                }, 500);
+        }
 
 
+        var compass = {
+            onSuccess: function(heading) {
+                var hdng = Math.floor(heading.magneticHeading);
+                $scope.orientation.compass = hdng;
+                $scope.$apply();
+                doUpdate();
+            },
+            onError: function(compassError) {
+                console.log("Compass error", err);
+                debug(5, err);
+                ezar.getBackCamera().start();
+            },
+            options: {
+                frequency: 10
             }
+        }
+
+        //var watchID = navigator.compass.watchHeading(compass.onSuccess, compass.onError, compass.options);
+
+
+
+
+        setInterval(function() { navigator.compass.getCurrentHeading(compass.onSuccess, compass.onError); }, 10);
+
+
+    }
 
 
     $scope.init();
@@ -121,32 +128,32 @@ angular.module('lunagrab.controllers', []).controller('AppCtrl', function($scope
 
     function getDeviceAngleOfView() {
         //mock
-        return { v: 20, h: 20 };
+        return { v: 75, h: 75 };
         /*
-        Camera.Parameters p = camera.getParameters();
-        double thetaV = Math.toRadians(p.getVerticalViewAngle());
-        double thetaH = Math.toRadians(p.getHorizontalViewAngle());
-        var theta = {
-            v: thetaV,
-            h: thetaH,
-        }
-        return theta;
+          var p = camera.getParameters();
+          var thetaV = Math.toRadians(p.getVerticalViewAngle());
+          var thetaH = Math.toRadians(p.getHorizontalViewAngle());
+          var theta = {
+              v: thetaV,
+              h: thetaH,
+          }
+          return theta;
         */
     }
 
     function getDeviceResolution() {
         //mock
-        return { v: 320, h: 568 };
-        /*
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
+        return { v: 360, h: 640 };
+
+        var display = getWindowManager().getDefaultDisplay();
+        var size = new Point();
         display.getSize(size);
         var resolution = {
             v: size.y,
             h: size.x
         }
         return resolution;
-        */
+
     }
 
     function getMoonPixelPosition(delta) {
@@ -160,7 +167,7 @@ angular.module('lunagrab.controllers', []).controller('AppCtrl', function($scope
             v: pixelsV,
             h: pixelsH
         }
-        debug(3,'moon pixels (h, v): ', pixels.h, pixels.v);
+        debug(3, 'moon pixels (h, v): ', pixels.h, pixels.v);
 
         return pixels;
     }
@@ -181,8 +188,8 @@ angular.module('lunagrab.controllers', []).controller('AppCtrl', function($scope
     function getMoonPosition(lat, lon, timezone) {
         return MoonApi.getMoonPosition(lat, lon, timezone)
             .then(function(result) {
-
-                var data = result;
+            	console.log(result);
+                var data = result.data;
                 var d = new Date();
                 var date = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear() + "," + d.getHours() + ":00:00";
                 console.log('looking for date  ' + date);
@@ -224,10 +231,10 @@ angular.module('lunagrab.controllers', []).controller('AppCtrl', function($scope
     }
 
     function doUpdate() {
-        debug(1,'orientation (compass, tilt): ', $scope.orientation.compass, $scope.orientation.tilt);
+        debug(1, 'orientation (compass, tilt): ', $scope.orientation.compass, $scope.orientation.tilt);
         var delta = getMoonDelta();
 
-        debug(2, 'delta (h, v): ', delta.h , delta.v);
+        debug(2, 'delta (h, v): ', delta.h, delta.v);
         positionArrow({ v: delta.v, h: delta.h });
         //debug('moon delta1 (h, v): '+delta.h+ "   "+delta.v, 4);
         positionMoon({ v: delta.v, h: delta.h });
@@ -244,7 +251,7 @@ angular.module('lunagrab.controllers', []).controller('AppCtrl', function($scope
 
     function positionArrow(delta) {
         var deg = getArrowAngle(delta);
-        debug(4,'arrow angle: ', deg);
+        debug(4, 'arrow angle: ', deg);
         $scope.arrowStyle = 'transform: rotate(' + deg + 'deg) translate(0, -80px)';
     }
 

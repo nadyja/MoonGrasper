@@ -7,7 +7,12 @@ angular.module('lunagrab.services', []).factory('MoonApi', function($http, $q) {
             var day = d.getDate();
             var year = d.getFullYear();
             var month = d.getMonth()+1;
-            //return $http.get('https://www.nrel.gov/midc/apps/sampa.pl?syear=' + year + '&smonth=' + month + '&sday=' + day + '&eyear=' + year + '&emonth=' + month + '&eday=' + day + '&step=60&stepunit=1&latitude=' + lat + '&longitude=' + lon + '&timezone=' + timezone + '&elev=0&press=835&temp=10&dut1=0.0&deltat=64.797&refract=0.5667&ozone=0.3&pwv=1.5&aod=0.07637&ba=0.85&albedo=0.2&field=3&field=4&field=5&zip=0');
+            var url='https://www.nrel.gov/midc/apps/sampa.pl?syear=' + year + 
+            '&smonth=' + month + 
+            '&sday=' + day +
+             '&eyear=' + year + '&emonth=' + month + '&eday=' + day + '&step=60&stepunit=1&latitude=' + lat + '&longitude=' + lon + '&timezone=' + timezone + '&elev=0&press=835&temp=10&dut1=0.0&deltat=64.797&refract=0.5667&ozone=0.3&pwv=1.5&aod=0.07637&ba=0.85&albedo=0.2&field=3&field=4&field=5&zip=0'
+            	console.log(url);
+            return $http.get(url);
 
 
 
@@ -43,10 +48,12 @@ angular.module('lunagrab.services', []).factory('MoonApi', function($http, $q) {
 				4/23/2016,0:00:00,67.443923,154.074842,-25.925158' + '\n\
 				4/23/2016,19:00:00,79.416969,131.080500,-48.919500' + '\n\
 				4/23/2016,20:00:00,73.491061,144.303627,-35.696373' + '\n\
-				4/23/2016,23:00:00,79.416969,131.080500,-48.919500';
+				4/23/2016,21:00:00,69.298280,158.590885,-21.409115' + '\n\
+				4/23/2016,22:00:00,67.245217,173.695769,-6.304231' + '\n\
+				4/23/2016,23:00:00,67.562098,189.048268,9.048268';
 
 
-            return mockApi(fakeAnswer, 0);
+            return mockApi({ data: fakeAnswer}, 0);
 
         },
 
