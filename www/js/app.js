@@ -3,22 +3,16 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic'])
-
+angular.module('lunagrab', ['ionic','lunagrab.controllers'])
 .run(function($ionicPlatform) {
-  var orientation;
-  var moon= {
-      compass: 0,
-      tilt: 90
-  }
+    var orientation;
+    var moon = {
+        compass: 0,
+        tilt: 90
+    }
     $ionicPlatform.ready(function() {
-
-        updatePosition({
-            tilt: 87,
-            compass:3,
-            lat: 0,
-            lng: 0
-        })
+        return;
+       
 
         //mock
         return;
@@ -27,7 +21,7 @@ angular.module('starter', ['ionic'])
                 ezar.getBackCamera().start();
 
                 if (window.DeviceOrientationEvent) {
-              
+
 
 
                     window.addEventListener('deviceorientation', function(eventData) {
@@ -92,128 +86,29 @@ angular.module('starter', ['ionic'])
 
 
 
-    function getArrowAngle(delta) {
-        var dir = {
-            x: false,
-            y: false
-        }
-        if (delta.v == 0) delta.v = 1;
-        if (delta.h < 0) {
-            dir.y = true;
-            delta.h = -delta.h;
-        }
-        if (delta.v < 0) {
-            dir.x = true;
-            delta.v = -delta.v;
-        }
-        var radians = Math.atan(delta.h / delta.v);
-        var deg = radians * 180 / Math.PI;
-        var resultDeg = 0;
-        if (dir.x && dir.y) {
-            resultDeg = deg;
-        }
-        if (dir.x && !dir.y) {
-            resultDeg = deg + 90;
-        }
-        if (!dir.x && !dir.y) {
-            resultDeg = deg + 180;
-        }
-        if (!dir.x && dir.y) {
-            resultDeg = deg + 270;
-        }
-        return resultDeg;
-    }
-
-    function getDeviceAngleOfView() {
-        //mock
-        return { v: 20, h: 20 };
-        /*
-        Camera.Parameters p = camera.getParameters();
-        double thetaV = Math.toRadians(p.getVerticalViewAngle());
-        double thetaH = Math.toRadians(p.getHorizontalViewAngle());
-        var theta = {
-            v: thetaV,
-            h: thetaH,
-        }
-        return theta;
-        */
-    }
-
-    function getDeviceResolution() {
-        //mock
-        return { v: 320, h: 568 };
-        /*
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        var resolution = {
-            v: size.y,
-            h: size.x
-        }
-        return resolution;
-        */
-    }
-
-    function getMoonPixelPosition(delta) {
-        var theta = getDeviceAngleOfView();
-        var resolution = getDeviceResolution();
-
-        var pixelsV = resolution.v * delta.v / theta.v;
-        var pixelsH = resolution.h * delta.h / theta.h;
-
-        var pixels = {
-            v: pixelsV,
-            h: pixelsH
-        }
-        debug('moon position (h, v): '+pixels.h+ "   "+pixels.v, 3);
-
-        return pixels;
-    }
-
-    function getMoonDelta() {
-        diffH = -orientation.compass + moon.compass;
-        diffV = orientation.tilt - moon.tilt;
-        return {
-            v: diffV,
-            h: diffH
-        }
-    }
-
-
-
-
-
-
-
-    function  updatePosition(newOrientation) {
-        orientation=newOrientation;
-        doUpdate();
-    }
-    function doUpdate() {
-        debug('orientation (compass, tilt): '+orientation.compass + '   ' + orientation.tilt, 0);
-        var delta = getMoonDelta();
-        
-        debug('delta (h, v): '+delta.h+ "   "+delta.v, 1);
-        positionArrow({v:delta.v, h:delta.h});
-        //debug('moon delta1 (h, v): '+delta.h+ "   "+delta.v, 4);
-        positionMoon({v:delta.v, h:delta.h});
-    }
-
-
-    function positionMoon(delta) {
-        var pixels = getMoonPixelPosition(delta);
-        
-        document.getElementById("moon").style = 'transform: translate(' + pixels.h + 'px,' + pixels.v + 'px)';
-
-    }
-
-    function positionArrow(delta) {
-        var deg = getArrowAngle(delta);
-         debug('arrow angle: '+deg, 2);
-        document.getElementById("arrow").style = 'transform: rotate(' + deg + 'deg) translate(0, -80px)';
-    }
-
-    function debug(txt, position) {
-        document.getElementById("debug" + position).innerHTML = txt;
-    }
 })
+
+
+.config(function($stateProvider, $urlRouterProvider) {
+    $stateProvider
+
+        .state('app', {
+        url: '/app',
+        abstract: true,
+        templateUrl: 'templates/app.html',
+        controller: 'AppCtrl'
+    })
+
+    .state('app.search', {
+        url: '/search',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/search.html'
+            }
+        }
+    })
+
+   
+    // if none of the above states are matched, use this as the fallback
+    $urlRouterProvider.otherwise('/app/search');
+});
