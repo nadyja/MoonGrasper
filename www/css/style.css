@@ -26,6 +26,7 @@ body {
     height: 100%;
     width: 100%;
     position: absolute;
+     top:0;
 }
 
 .finder-overlay i {
@@ -40,13 +41,19 @@ body {
     line-height: 1;
     -webkit-font-smoothing: antialiased;
     content: "";
-    top: 207px;
-    position: relative;
+    top: 50%;
+    position: absolute;
     z-index: 999;
     left: 50%;
     color: #fff;
     margin-left: -26px;
-    font-size: 49px;
+    font-size: 50px;
+    width:50px;
+    height: 50px;
+    margin-top:-50px;
+   
+    text-align: center;
+
 }
 
 .finder-contents {
@@ -57,21 +64,24 @@ body {
     solute;
 }
 
-.moon {
+#moon {
     background: url(../img/moon.png) center center no-repeat;
     background-size: cover;
     width: 80px;
     height: 80px;
     position: absolute;
-    top: 300px;
-    left: 20px;
+    top: 50%;
+    left: 50%;
+    margin-left:-40px;
+    margin-top: -40px;
 }
 
 .area {
     position: absolute;
-    top: 30%;
+    top: 50%;
     left: 50%;
     margin-left: -75px;
+    margin-top: -75px;
     width: 150px;
     height: 150px;
     border: 2px dashed #fff;
@@ -86,10 +96,10 @@ body {
     margin: 0 40px;
 }
 
-#debug {
+.debug {
     background: #000;
     position: absolute;
-    height: 10%;
+    height: 20%;
     bottom: 0;
     left: 0;
     width: 100%;

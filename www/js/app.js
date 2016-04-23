@@ -6,47 +6,73 @@
 angular.module('starter', ['ionic'])
 
 .run(function($ionicPlatform) {
+  var orientation;
+  var moon= {
+      compass: 0,
+      tilt: 90
+  }
     $ionicPlatform.ready(function() {
 
+        updatePosition({
+            tilt: 87,
+            compass:3,
+            lat: 0,
+            lng: 0
+        })
+
+        //mock
+        return;
         ezar.initializeVideoOverlay(
             function() {
                 ezar.getBackCamera().start();
+
+                if (window.DeviceOrientationEvent) {
+              
+
+
+                    window.addEventListener('deviceorientation', function(eventData) {
+                        // gamma is the left-to-right tilt in degrees, where right is positive
+                        var tiltLR = Math.floor(eventData.gamma);
+
+                        // beta is the front-to-back tilt in degrees, where front is positive
+                        var tiltFB = Math.floor(eventData.beta);
+
+                        // alpha is the compass direction the device is facing in degrees
+                        var dir = Math.floor(eventData.alpha);
+
+                        // call our orientation event handler
+                        orientation.tilt = tiltFB;
+
+                        doUpdate();
+                        //debug(tiltLR, tiltFB, dir);
+                    }, false);
+
+
+                }
+
+
+
                 setInterval(function() {
                     navigator.compass.getCurrentHeading(
                         function(heading) {
                             var hdng = Math.floor(heading.magneticHeading);
-                            debug(hdng);
-                            updateArrows(hdng);
+                            orientation.compass = hdng;
+                            doUpdate();
+
                         },
                         function(err) {
                             console.log("Compass error", err);
-                            debug(err);
-                                ezar.getBackCamera().start();
+                            debug(err, 0);
+                            ezar.getBackCamera().start();
                         });
                 }, 500);
 
 
             }
+
         )
 
-  function debug(txt) {
-        // Set heading value
-        document.getElementById("debug")
-            .innerHTML = txt;
 
-    }
-
-    function updateArrows(hdng) {
-      diffH=hdng;
-      positionArrow(0, diffH)
-    }
-    function positionArrow(diffV, diffH) {
-      var deg=0;
-      if(diffH>0 && diffH<=180) deg=90;
-      else deg=270;
-
-        document.getElementById("arrow").style = 'transform: rotate('+deg+'deg)';
-    }
 
         if (window.cordova && window.cordova.plugins.Keyboard) {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -62,4 +88,132 @@ angular.module('starter', ['ionic'])
             StatusBar.styleDefault();
         }
     });
+
+
+
+
+    function getArrowAngle(delta) {
+        var dir = {
+            x: -1,
+            y: -1
+        }
+        if (delta.v == 0) delta.v = 1;
+        if (delta.h < 0) {
+            dir.y = 1;
+            delta.h = -delta.h;
+        }
+        if (delta.v < 0) {
+            dir.x = 1;
+            delta.v = -delta.v;
+        }
+        var radians = Math.atan(delta.h / delta.v);
+        var deg = radians * 180 / Math.PI;
+        var resultDeg = 0;
+        if (dir.x && dir.y) {
+            resultDeg = deg;
+        }
+        if (dir.x && !dir.y) {
+            resultDeg = deg + 90;
+        }
+        if (!dir.x && !dir.y) {
+            resultDeg = deg + 180;
+        }
+        if (!dir.x && dir.y) {
+            resultDeg = deg + 270;
+        }
+        return resultDeg;
+    }
+
+    function getDeviceAngleOfView() {
+        //mock
+        return { v: 20, h: 20 };
+        /*
+        Camera.Parameters p = camera.getParameters();
+        double thetaV = Math.toRadians(p.getVerticalViewAngle());
+        double thetaH = Math.toRadians(p.getHorizontalViewAngle());
+        var theta = {
+            v: thetaV,
+            h: thetaH,
+        }
+        return theta;
+        */
+    }
+
+    function getDeviceResolution() {
+        //mock
+        return { v: 320, h: 568 };
+        /*
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        var resolution = {
+            v: size.y,
+            h: size.x
+        }
+        return resolution;
+        */
+    }
+
+    function getMoonPixelPosition(delta) {
+        var theta = getDeviceAngleOfView();
+        var resolution = getDeviceResolution();
+
+        var pixelsV = resolution.v * delta.v / theta.v;
+        var pixelsH = resolution.h * delta.h / theta.h;
+
+        var pixels = {
+            v: pixelsV,
+            h: pixelsH
+        }
+        debug('moon position (h, v): '+pixels.h+ "   "+pixels.v, 3);
+
+        return pixels;
+    }
+
+    function getMoonDelta() {
+        diffH = -orientation.compass + moon.compass;
+        diffV = orientation.tilt - moon.tilt;
+        return {
+            v: diffV,
+            h: diffH
+        }
+    }
+
+
+
+
+
+
+
+    function  updatePosition(newOrientation) {
+        orientation=newOrientation;
+        doUpdate();
+    }
+    function doUpdate() {
+        debug('orientation (compass, tilt): '+orientation.compass + '   ' + orientation.tilt, 0);
+        var delta = getMoonDelta();
+        
+        debug('delta (h, v): '+delta.h+ "   "+delta.v, 1);
+        positionArrow({v:delta.v, h:delta.h});
+        //debug('moon delta1 (h, v): '+delta.h+ "   "+delta.v, 4);
+        positionMoon({v:delta.v, h:delta.h});
+    }
+
+
+    function positionMoon(delta) {
+        var pixels = getMoonPixelPosition(delta);
+        
+        document.getElementById("moon").style = 'transform: translate(' + pixels.h + 'px,' + pixels.v + 'px)';
+
+    }
+
+    function positionArrow(delta) {
+        var deg = getArrowAngle(delta);
+         debug('arrow angle: '+deg, 2);
+        document.getElementById("arrow").style = 'transform: rotate(' + deg + 'deg) translate(0, -80px)';
+    }
+
+    function debug(txt, position) {
+        document.getElementById("debug" + position).innerHTML = txt;
+    }
 })
