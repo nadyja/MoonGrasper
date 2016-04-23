@@ -31,38 +31,42 @@ angular.module('lunagrab.controllers', []).controller('AppCtrl', function($scope
 
     }
     $scope.init();
+  function getArrowAngle(delta) {
+    var v = delta.v;
+    var h = delta.h;
 
-    function getArrowAngle(delta) {
-        var dir = {
-            x: false,
-            y: false
-        }
-        if (delta.v == 0) delta.v = 1;
-        if (delta.h < 0) {
-            dir.y = true;
-            delta.h = -delta.h;
-        }
-        if (delta.v < 0) {
-            dir.x = true;
-            delta.v = -delta.v;
-        }
-        var radians = Math.atan(delta.h / delta.v);
-        var deg = radians * 180 / Math.PI;
-        var resultDeg = 0;
-        if (dir.x && dir.y) {
-            resultDeg = deg;
-        }
-        if (dir.x && !dir.y) {
-            resultDeg = deg + 90;
-        }
-        if (!dir.x && !dir.y) {
-            resultDeg = deg + 180;
-        }
-        if (!dir.x && dir.y) {
-            resultDeg = deg + 270;
-        }
-        return resultDeg;
+    if (h === 0 && v === 0) {
+      return null
+    } else if (v === 0) {
+      if (h > 0) {
+        return 90
+      } else {
+        return 270
+      }
+    } else if (h === 0) {
+      if (v > 0) {
+        return 0
+      } else {
+        return 180
+      }
     }
+
+    var radians = Math.atan(delta.h / delta.v);
+    var deg = Math.abs(radians * 180 / Math.PI);
+
+    //clockwise rotation
+    if (h > 0 && v > 0) {
+      return deg
+    } else if (h > 0 && v < 0) {
+      return 180 - deg
+    } else if (h < 0 && v < 0) {
+      return 180 + deg
+    } else if (h < 0 && v > 0) {
+      return 270 + deg
+    }
+
+
+  }
 
     function getDeviceAngleOfView() {
         //mock
