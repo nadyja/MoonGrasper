@@ -39,15 +39,15 @@ angular.module('lunagrab.controllers', []).controller('AppCtrl', function($scope
       return null
     } else if (v === 0) {
       if (h > 0) {
-        return 90
+        return -90
       } else {
-        return 270
+        return -270
       }
     } else if (h === 0) {
       if (v > 0) {
         return 0
       } else {
-        return 180
+        return -180
       }
     }
 
@@ -56,13 +56,13 @@ angular.module('lunagrab.controllers', []).controller('AppCtrl', function($scope
 
     //clockwise rotation
     if (h > 0 && v > 0) {
-      return deg
+      return -deg
     } else if (h > 0 && v < 0) {
-      return 180 - deg
+      return -(180 - deg)
     } else if (h < 0 && v < 0) {
-      return 180 + deg
+      return -(180 + deg)
     } else if (h < 0 && v > 0) {
-      return 270 + deg
+      return -(270 + deg)
     }
 
 
