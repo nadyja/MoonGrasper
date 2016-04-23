@@ -1,6 +1,14 @@
 angular.module('lunagrab.controllers', []).controller('AppCtrl', function($scope, $ionicModal, $timeout, MoonApi) {
 
-    $scope.orientation = {}
+    var isDebug = false;
+
+
+    $scope.orientation = {
+    	 tilt: 90,
+                compass: 38,
+                lat: 0,
+                lng: 0
+    }
     $scope.moon = {
         compass: 0,
         tilt: 90
@@ -8,63 +16,65 @@ angular.module('lunagrab.controllers', []).controller('AppCtrl', function($scope
     $scope.arrowStyle = "transform: rotate(0deg) translate(0, -70px); ";
     $scope.moonStyle = "";
     $scope.debug = {};
+
+
+
     $scope.init = function() {
 
-        getMoonPosition(52, 14, 2).then(function(result) {
+        MoonApi.getMoonPosition(52, 14, 2, isDebug).then(function(result) {
 
             $scope.moon = {
                 tilt: parseFloat(result[0]),
                 compass: parseFloat(result[1])
             }
             debug(0, 'moon position (compass, tilt): ', $scope.moon.compass, $scope.moon.tilt);
-            updatePosition({
-                tilt: 90,
-                compass: 38,
-                lat: 0,
-                lng: 0
-            });
-            initializeEzar();
+            
+            redrawPositions();
 
+            if (!isDebug) {
+                initTiltListner();
+                initCompassListner();
+            }
         })
 
     }
+    $scope.init();
 
 
-    function initializeEzar() {
-        debug(5, 'init');
-
-        debug(5, 'no device orientation');
+    function initTiltListner() {
         if (window.DeviceOrientationEvent) {
-            debug(5, 'device orientation present');
-
-
             window.addEventListener('deviceorientation', function(eventData) {
                 // gamma is the left-to-right tilt in degrees, where right is positive
-                var tiltLR = Math.floor(eventData.gamma);
+                var tiltLR = eventData.gamma;
 
                 // beta is the front-to-back tilt in degrees, where front is positive
-                var tiltFB = Math.floor(eventData.beta);
+                var tiltFB = eventData.beta;
 
                 // alpha is the compass direction the device is facing in degrees
-                var dir = Math.floor(eventData.alpha);
+                var dir = eventData.alpha;
 
                 // call our orientation event handler
                 $scope.orientation.tilt = tiltFB;
+                $scope.orientation.secondaryCompass = dir;
                 $scope.$apply();
-                doUpdate();
+                redrawPositions();
                 //debug(tiltLR, tiltFB, dir);
             }, false);
 
 
         }
+    }
+
+    function initCompassListner() {
+
 
 
         var compass = {
             onSuccess: function(heading) {
-                var hdng = Math.floor(heading.magneticHeading);
+                var hdng = heading.magneticHeading;
                 $scope.orientation.compass = hdng;
                 $scope.$apply();
-                doUpdate();
+                redrawPositions();
             },
             onError: function(compassError) {
                 console.log("Compass error", err);
@@ -82,12 +92,18 @@ angular.module('lunagrab.controllers', []).controller('AppCtrl', function($scope
 
 
         setInterval(function() { navigator.compass.getCurrentHeading(compass.onSuccess, compass.onError); }, 10);
+    }
+  
 
+    function redrawPositions() {
+        debug(1, 'orientation (compass, tilt): ', $scope.orientation.compass, $scope.orientation.tilt);
+        var delta = getMoonDelta();
 
+        debug(2, 'delta (h, v): ', delta.h, delta.v);
+        positionArrow({ v: delta.v, h: delta.h });
+        positionMoon({ v: delta.v, h: delta.h });
     }
 
-
-    $scope.init();
 
     function getArrowAngle(delta) {
         var v = delta.v;
@@ -122,8 +138,6 @@ angular.module('lunagrab.controllers', []).controller('AppCtrl', function($scope
         } else if (h < 0 && v > 0) {
             return -(270 + deg)
         }
-
-
     }
 
     function getDeviceAngleOfView() {
@@ -153,7 +167,6 @@ angular.module('lunagrab.controllers', []).controller('AppCtrl', function($scope
             h: size.x
         }
         return resolution;
-
     }
 
     function getMoonPixelPosition(delta) {
@@ -184,61 +197,6 @@ angular.module('lunagrab.controllers', []).controller('AppCtrl', function($scope
 
 
 
-
-    function getMoonPosition(lat, lon, timezone) {
-        return MoonApi.getMoonPosition(lat, lon, timezone)
-            .then(function(result) {
-            	console.log(result);
-                var data = result.data;
-                var d = new Date();
-                var date = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear() + "," + d.getHours() + ":00:00";
-                console.log('looking for date  ' + date);
-                data = data.split("\n");
-                for (line in data) {
-                    if (data[line].search(date) !== -1) {
-
-                        return (data[line].split(",").slice(2));
-                    }
-                }
-            });
-
-        /*
-                var d = new Date();
-                var day = d.getDate();
-                var year = d.getFullYear();
-                var month = d.getMonth();
-                req = 'https://www.nrel.gov/midc/apps/sampa.pl?syear=' + year + '&smonth=' + month + '&sday=' + day + '&eyear=' + year + '&emonth=' + month + '&eday=' + day + '&step=60&stepunit=1&latitude=' + lat + '&longitude=' + lon + '&timezone=' + timezone + '&elev=0&press=835&temp=10&dut1=0.0&deltat=64.797&refract=0.5667&ozone=0.3&pwv=1.5&aod=0.07637&ba=0.85&albedo=0.2&field=3&field=4&field=5&zip=0';
-                var xhttp = new XMLHttpRequest();
-                xhttp.open("get", req, true);
-                xhttp.send();
-                return new Promise(function(resolve, reject) {
-                    xhttp.onreadystatechange = function() {
-                        if (xhttp.readyState == 4 && xhttp.status == 200) {
-                            var data = xhttp.responseText;
-
-                        }
-                    };
-                });
-                */
-    }
-
-
-
-
-    function updatePosition(newOrientation) {
-        $scope.orientation = newOrientation;
-        doUpdate();
-    }
-
-    function doUpdate() {
-        debug(1, 'orientation (compass, tilt): ', $scope.orientation.compass, $scope.orientation.tilt);
-        var delta = getMoonDelta();
-
-        debug(2, 'delta (h, v): ', delta.h, delta.v);
-        positionArrow({ v: delta.v, h: delta.h });
-        //debug('moon delta1 (h, v): '+delta.h+ "   "+delta.v, 4);
-        positionMoon({ v: delta.v, h: delta.h });
-    }
 
 
     function positionMoon(delta) {

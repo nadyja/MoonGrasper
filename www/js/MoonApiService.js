@@ -1,59 +1,57 @@
 angular.module('lunagrab.services', []).factory('MoonApi', function($http, $q) {
 
+
+
+    function parseMoonPosition(result) {
+        console.log(result);
+        var data = result.data;
+        var d = new Date();
+        var date = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear() + "," + d.getHours() + ":00:00";
+        data = data.split("\n");
+        for (line in data) {
+            if (data[line].search(date) !== -1) {
+
+                return (data[line].split(",").slice(2));
+            }
+        }
+
+    }
+
+
+
     return {
-        getMoonPosition: function(lat, lon, timezone) {
+        getMoonPosition: function(lat, lon, timezone, isDebug) {
             //return MockApi.getBundleList();
             var d = new Date();
             var day = d.getDate();
             var year = d.getFullYear();
-            var month = d.getMonth()+1;
-            var url='https://www.nrel.gov/midc/apps/sampa.pl?syear=' + year + 
-            '&smonth=' + month + 
-            '&sday=' + day +
-             '&eyear=' + year + '&emonth=' + month + '&eday=' + day + '&step=60&stepunit=1&latitude=' + lat + '&longitude=' + lon + '&timezone=' + timezone + '&elev=0&press=835&temp=10&dut1=0.0&deltat=64.797&refract=0.5667&ozone=0.3&pwv=1.5&aod=0.07637&ba=0.85&albedo=0.2&field=3&field=4&field=5&zip=0'
-            	console.log(url);
-            return $http.get(url);
-
-
-
-            var fakeAnswer = 'Date,Time,Lunar Topocentric zenith angle,Lunar Top. azimuth angle (eastward from N),Lunar Top. azimuth angle (westward from S)\
-			3/23/2016,0:00:00,51.840689,164.570743,-15.429257' + '\n\
-			3/23/2016,1:00:00,51.045663,183.378993,3.378993' + '\n\
-			3/23/2016,2:00:00,53.181976,201.843216,21.843216' + '\n\
-			3/23/2016,3:00:00,57.897518,218.749868,38.749868' + '\n\
-			3/23/2016,4:00:00,64.554485,233.691076,53.691076' + '\n\
-			3/23/2016,5:00:00,72.500400,246.924287,66.924287' + '\n\
-			3/23/2016,6:00:00,81.178790,258.987004,78.987004' + '\n\
-			3/23/2016,7:00:00,89.873660,270.467701,90.467701' + '\n\
-			3/23/2016,8:00:00,99.325266,281.941509,101.941509' + '\n\
-			3/23/2016,9:00:00,107.938855,293.977276,113.977276' + '\n\
-			3/23/2016,10:00:00,115.740276,307.143342,127.143342' + '\n\
-			3/23/2016,11:00:00,122.221630,321.942814,141.942814' + '\n\
-			3/23/2016,12:00:00,126.781225,338.598006,158.598006' + '\n\
-			3/23/2016,13:00:00,128.837873,356.706896,176.706896' + '\n\
-			3/23/2016,14:00:00,128.073956,15.136414,-164.863586' + '\n\
-			3/23/2016,15:00:00,124.625372,32.569600,-147.430400' + '\n\
-			3/23/2016,16:00:00,118.999303,48.258305,-131.741695' + '\n\
-			3/23/2016,17:00:00,111.820711,62.190784,-117.809216' + '\n\
-			3/23/2016,18:00:00,103.654201,74.785577,-105.214423' + '\n\
-			3/23/2016,19:00:00,94.962802,86.599318,-93.400682' + '\n\
-			3/23/2016,20:00:00,85.979570,98.200739,-81.799261' + '\n\
-			3/23/2016,21:00:00,77.501507,110.147812,-69.852188' + '\n\
-			3/23/2016,22:00:00,69.606592,122.988000,-57.012000' + '\n\
-			3/23/2016,23:00:00,62.853220,137.213986,-42.786014';
+            var month = d.getMonth() + 1;
+            var url = 'https://www.nrel.gov/midc/apps/sampa.pl?syear=' + year +
+                '&smonth=' + month +
+                '&sday=' + day +
+                '&eyear=' + year +
+                '&emonth=' + month +
+                '&eday=' + day +
+                '&step=60&stepunit=1&latitude=' + lat +
+                '&longitude=' + lon +
+                '&timezone=' + timezone +
+                '&elev=0&press=835&temp=10&dut1=0.0&deltat=64.797&refract=0.5667&ozone=0.3&pwv=1.5&aod=0.07637&ba=0.85&albedo=0.2&field=3&field=4&field=5&zip=0'
+            if(!isDebug) return $http.get(url).then(parseMoonPosition);
 
 
 
             var fakeAnswer = 'Date,Time,Lunar Topocentric zenith angle,Lunar Top. azimuth angle (eastward from N),Lunar Top. azimuth angle (westward from S)' + '\n\
-				4/23/2016,0:00:00,67.443923,154.074842,-25.925158' + '\n\
-				4/23/2016,19:00:00,79.416969,131.080500,-48.919500' + '\n\
-				4/23/2016,20:00:00,73.491061,144.303627,-35.696373' + '\n\
-				4/23/2016,21:00:00,69.298280,158.590885,-21.409115' + '\n\
-				4/23/2016,22:00:00,67.245217,173.695769,-6.304231' + '\n\
-				4/23/2016,23:00:00,67.562098,189.048268,9.048268';
+				4/23/2016,19:00:00,112.340454,84.465859,-95.534141' + '\n\
+				4/23/2016,20:00:00,103.528437,96.008571,-83.991429' + '\n\
+				4/23/2016,21:00:00,94.879477,107.293550,-72.706450' + '\n\
+				4/23/2016,22:00:00,86.562725,118.842765,-61.157235' + '\n\
+				4/23/2016,23:00:00,79.416969,131.080500,-48.919500';
 
 
-            return mockApi({ data: fakeAnswer}, 0);
+
+
+
+            return mockApi({ data: fakeAnswer }, 0).then(parseMoonPosition);
 
         },
 
