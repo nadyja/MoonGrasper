@@ -3,8 +3,8 @@ angular.module('MoonGrasper').controller('SearchCtrl', function($scope, $rootSco
 
 
     $scope.orientation = {
-        tilt: 90,
-        compass: 38,
+        tilt: 79,
+        compass: 144,
         lat: 0,
         lng: 0
     }
@@ -12,6 +12,7 @@ angular.module('MoonGrasper').controller('SearchCtrl', function($scope, $rootSco
         compass: 0,
         tilt: 90
     }
+    var sensitivity=5;
     $scope.arrowStyle = "transform: rotate(0deg) translate(0, -70px); ";
     $scope.moonStyle = "";
 
@@ -21,7 +22,7 @@ angular.module('MoonGrasper').controller('SearchCtrl', function($scope, $rootSco
 
     $scope.init = function() {
 
-        MoonApi.getMoonPosition(52, 14, 2, $rootScope.isDebug).then(function(result) {
+         MoonApi.getMoonPosition(DeviceApi.getCoordinatesAndTimezone(), $rootScope.isDebug).then(function(result) {
 
             $scope.moon = {
                 tilt: parseFloat(result[0]),
@@ -32,6 +33,7 @@ angular.module('MoonGrasper').controller('SearchCtrl', function($scope, $rootSco
             redrawPositions();
 
             if (!$rootScope.isDebug) {
+                DeviceApi.initCameraBackground();
                 DeviceApi.initTiltListner(function(tilt) {
                         $scope.orientation.tilt = tilt;
                         $scope.$apply();
@@ -77,7 +79,7 @@ angular.module('MoonGrasper').controller('SearchCtrl', function($scope, $rootSco
     }
 
     function isMoonInCatchingArea(delta) {
-        var areaAngle = 10;
+        var areaAngle = sensitivity;
         return delta.v > -areaAngle &&
             delta.v < areaAngle &&
             delta.h > -areaAngle &&
@@ -87,7 +89,7 @@ angular.module('MoonGrasper').controller('SearchCtrl', function($scope, $rootSco
     function setArrowPosition(delta) {
         var deg = getArrowAngle(delta);
         $rootScope.debug(4, 'arrow angle: ', deg);
-        $scope.arrowStyle = 'transform: rotate(' + deg + 'deg) translate(0, -80px)';
+        $scope.arrowStyle = 'transform: rotate(' + deg + 'deg) translate(0, -100px)';
     }
 
     function getArrowAngle(delta) {

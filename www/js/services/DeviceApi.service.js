@@ -1,20 +1,22 @@
 angular.module('MoonGrasper').factory('DeviceApi', function($http, $q) {
     return {
+        initCameraBackground: function() {
+            ezar.initializeVideoOverlay(
+                function() {
+                    ezar.getBackCamera().start();
+                });
+        },
         initTiltListner: function(callback) {
             if (window.DeviceOrientationEvent) {
                 window.addEventListener('deviceorientation', function(eventData) {
                     // gamma is the left-to-right tilt in degrees, where right is positive
                     var tiltLR = eventData.gamma;
-
                     // beta is the front-to-back tilt in degrees, where front is positive
                     var tiltFB = eventData.beta;
-
                     // alpha is the compass direction the device is facing in degrees
                     var dir = eventData.alpha;
 
-                    // call our orientation event handler
                     callback(tiltFB);
-                    //debug(tiltLR, tiltFB, dir);
                 }, false);
 
 
@@ -22,19 +24,19 @@ angular.module('MoonGrasper').factory('DeviceApi', function($http, $q) {
         },
         initCompassListner: function(callback) {
             var compass = {
-                    onSuccess: function(heading) {
-                        var hdng = heading.magneticHeading;
-                        callback(hdng);
-                    },
-                    onError: function(compassError) {
-                        console.log("Compass error", err);
-                        debug(5, err);
-                        ezar.getBackCamera().start();
-                    },
-                    options: {
-                        frequency: 10
-                    }
+                onSuccess: function(heading) {
+                    var hdng = heading.magneticHeading;
+                    callback(hdng);
+                },
+                onError: function(compassError) {
+                    console.log("Compass error", err);
+                    debug(5, err);
+                    ezar.getBackCamera().start();
+                },
+                options: {
+                    frequency: 10
                 }
+            }
             setInterval(function() { navigator.compass.getCurrentHeading(compass.onSuccess, compass.onError); }, 10);
         },
         getAngleOfView: function() {
@@ -51,7 +53,7 @@ angular.module('MoonGrasper').factory('DeviceApi', function($http, $q) {
               return theta;
             */
         },
-        getDisplayResolution: function() {            
+        getDisplayResolution: function() {
             return { v: 360, h: 640 }; //mock
             //TODO:  find out why this doesn't work
             var display = getWindowManager().getDefaultDisplay();
@@ -63,9 +65,14 @@ angular.module('MoonGrasper').factory('DeviceApi', function($http, $q) {
             }
             return resolution;
         },
-        getGeographicalPosition: function() {
+        getCoordinatesAndTimezone: function() {
+            return {
+                lat: 52,
+                lon: 14,
+                timezone: 2
+            };
+        },
 
-        }
     }
 
 });

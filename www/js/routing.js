@@ -19,14 +19,15 @@ angular.module('MoonGrasper').config(function($stateProvider, $urlRouterProvider
             }
         })
         .state('app.found', {
-            url: '/search',
+            url: '/found',
             views: {
                 'menuContent': {
-                    templateUrl: 'templates/found.html'
+                    templateUrl: 'templates/found.html',
+                    controller: 'FoundCtrl'
                 }
             }
         })
 
 
-    $urlRouterProvider.otherwise('/app/search');
+    $urlRouterProvider.otherwise('/app/found');
 });

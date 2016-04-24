@@ -1,13 +1,16 @@
 <div class="finder">
     <div id="moon" style="{{moonStyle}}"></div>
-    <div class="finder-overlay">
-        <i id="arrow" class="ion-chevron-up" style="{{arrowStyle}}"></i>
-        <div class="area"></div>
+    <div class="finder-overlay">        
+        <div class="area">
+            <div class="area-border"></div>
+        </div>
     </div>
     <div class="finder-contents">
+    	<i id="arrow" class="ion-ios-arrow-up" style="{{arrowStyle}}"></i>
         <h3>Follow the arrows to find the moon</h3>
     </div>
 </div>
+
 <div class="debug">
     <table style="width: 100%;">
         <tr ng-repeat="debugItem in debug">

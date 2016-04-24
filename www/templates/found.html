@@ -1,5 +1,37 @@
-<div class="finder">
+<ion-content padding="true" scroll="false">
+    <div id="container" style="
+    position:fixed;
+    display:inline;
+    top:0;
+    right:0;
+    bottom:45px;
+    left:0;
+    ">
+        <div id="content" style="
+        position:fixed;
+        display:inline;
+        right:0;
+        left:0;
+        top:0;
+        bottom:45px;
+        -webkit-transform-origin: 0 0;
+        margin-top:45px;">
+            <img ng-src="{{getCurrentFullMoonImage()}}" width="500" zoomable id="image-scrollable">
+        </div>
+    </div>
+</ion-content>
+
+<!--
+<div class="finder" id="view-found">
     <div class="finder-contents">
-        <h3>Moon caught</h3>
+        <h3>YOU'VE CAUGHT:</h3>
+        <div class="info-pane">
+            <h3>97% Waning Gibbous</h3>
+            <p>
+                <label>Moonrise:</label> <span>21:50</span></p>
+            <p>
+                <label>Moonset:</label> <span>05:35</span></p>
+        </div>
     </div>
 </div>
+-->

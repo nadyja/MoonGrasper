@@ -1,0 +1,23 @@
+#moon-zoomable {
+	    position: absolute;
+    padding: 20px;
+    width: 100%;
+    left: 0;
+    top: 100px;
+}
+#view-found {
+	background: url(../img/bgr-space.jpg) center center no-repeat fixed;
+	background-size: cover;
+.finder-contents h3 { margin-top:0;}
+}
+
+.info-pane {
+	background: rgba(0,0,0,0.4);
+	bottom: 0;
+	left:0;
+	width: 100%;
+	position: absolute;
+	h3 {
+		padding: 10px 0 20px;
+	}
+}

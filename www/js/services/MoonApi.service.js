@@ -20,7 +20,7 @@ angular.module('MoonGrasper').factory('MoonApi', function($http, $q) {
 
 
     return {
-        getMoonPosition: function(lat, lon, timezone, isDebug) {
+        getMoonPosition: function(coordinates, isDebug) {
             //return MockApi.getBundleList();
             var d = new Date();
             var day = d.getDate();
@@ -32,9 +32,9 @@ angular.module('MoonGrasper').factory('MoonApi', function($http, $q) {
                 '&eyear=' + year +
                 '&emonth=' + month +
                 '&eday=' + day +
-                '&step=60&stepunit=1&latitude=' + lat +
-                '&longitude=' + lon +
-                '&timezone=' + timezone +
+                '&step=60&stepunit=1&latitude=' + coordinates.lat +
+                '&longitude=' + coordinates.lon +
+                '&timezone=' + coordinates.timezone +
                 '&elev=0&press=835&temp=10&dut1=0.0&deltat=64.797&refract=0.5667&ozone=0.3&pwv=1.5&aod=0.07637&ba=0.85&albedo=0.2&field=3&field=4&field=5&zip=0'
             if (!isDebug) return $http.get(url).then(parseMoonPosition);
 
@@ -78,6 +78,10 @@ angular.module('MoonGrasper').factory('MoonApi', function($http, $q) {
             return mockApi({ data: fakeAnswer }, 0).then(parseMoonPosition);
 
         },
+        getMoonPhase: function() {
+            //returns 1 to 28 (14 fullmoon)
+            return 14;
+        }
 
     }
 

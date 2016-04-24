@@ -22,5 +22,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 @import "www/lib/ionic/scss/ionic"; 
 
 @import "global";
+@import "objects";
 @import "view-search";  
+@import "view-found"; 
     
