@@ -136,7 +136,11 @@ angular.module('MoonGrasper').controller('SearchCtrl', function ($scope, $rootSc
   }
 
   function getMoonDelta() {
-    diffH = $scope.orientation.compass - $scope.moon.compass;
+    if ($scope.orientation.compass > 180) {
+      diffH =  -($scope.orientation.compass - 180 - $scope.moon.compass)
+    } else {
+      diffH = $scope.orientation.compass - $scope.moon.compass
+    }
     diffV = -$scope.orientation.tilt + ($scope.moon.tilt);
     return {
       v: diffV,
