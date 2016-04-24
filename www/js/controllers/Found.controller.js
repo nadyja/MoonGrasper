@@ -1,11 +1,15 @@
 angular.module('MoonGrasper').controller('FoundCtrl', function($scope, $rootScope, $ionicModal, $timeout, MoonApi, DeviceApi, $state) {
 
         $rootScope.isCaught = true;
-
+        $scope.phase= {
+            Name: 'Wanning Gibous'
+        }
     })
     .service('ScrollRender', function() {
         this.render = function(content) {
             return (function(global) {
+                var globalZoom=1;
+
 
                 var docStyle = document.documentElement.style;
 
@@ -34,20 +38,24 @@ angular.module('MoonGrasper').controller('FoundCtrl', function($scope, $rootScop
                 var transformProperty = vendorPrefix + "Transform";
 
                 if (helperElem.style[perspectiveProperty] !== undef) {
+                    console.log('first');
 
                     return function(left, top, zoom) {
+                        console.log('firstzoom '+zoom);
                         content.style[transformProperty] = 'translate3d(' + (-left) + 'px,' + (-top) + 'px,0) scale(' + zoom + ')';
                     };
 
                 } else if (helperElem.style[transformProperty] !== undef) {
-
+                    console.log('second'+zoom);
                     return function(left, top, zoom) {
+                        console.log('second zoom'+ zoom)
                         content.style[transformProperty] = 'translate(' + (-left) + 'px,' + (-top) + 'px) scale(' + zoom + ')';
                     };
 
                 } else {
-
+                    console.log('third');
                     return function(left, top, zoom) {
+                        console.log('third zoom'+ zoom)
                         content.style.marginLeft = left ? (-left / zoom) + 'px' : '';
                         content.style.marginTop = top ? (-top / zoom) + 'px' : '';
                         content.style.zoom = zoom || '';
@@ -102,13 +110,15 @@ angular.module('MoonGrasper').controller('FoundCtrl', function($scope, $rootScop
                 reflow();
 
                 if ('ontouchstart' in window) {
-
+                    console.log('first touch start');
                     container.addEventListener("touchstart", function(e) {
                         // Don't react if initial down happens on a form element
+                      /*
                         if (e.touches[0] && e.touches[0].target && e.touches[0].target.tagName.match(/input|textarea|select/i)) {
                             return;
                         }
-
+                      */
+                        console.log(e.touches);
                         scroller.doTouchStart(e.touches, e.timeStamp);
                         e.preventDefault();
                     }, false);
@@ -166,6 +176,8 @@ angular.module('MoonGrasper').controller('FoundCtrl', function($scope, $rootScop
                     }, false);
 
                     container.addEventListener(navigator.userAgent.indexOf("Firefox") > -1 ? "DOMMouseScroll" : "mousewheel", function(e) {
+
+                        console.log('scroll');
                         scroller.doMouseZoom(e.detail ? (e.detail * -120) : e.wheelDelta, e.timeStamp, e.pageX, e.pageY);
                     }, false);
                 }

@@ -12,7 +12,7 @@ body {
 }
 
 .debug {
-    background: rgba(0,0,0,0.4);
+    background: rgba(0, 0, 0, 0.4);
     position: absolute;
     height: 20%;
     bottom: 0;
@@ -22,18 +22,15 @@ body {
     font-size: 10px;
     padding: 10px;
     z-index: 999;
-    // display: none;
+ display: none;
 }
+
 .finder-contents h3.logo-text {
-        font-family: 'Coming Soon', cursive;
-    text-transform: none;
-    font-size: 33px;
-        font-family: 'Coming Soon', cursive;
-    text-transform: none;
-    font-size: 45px;
-    font-weight: bold;
+    text-transform: uppercase;
+    font-weight: 200;
+    font-size: 30px;
     color: #fff;
     span {
-    color: #FF5722;
-}
+        color: #FF5722;
+    }
 }
