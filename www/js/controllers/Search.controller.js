@@ -3,8 +3,8 @@ angular.module('MoonGrasper').controller('SearchCtrl', function($scope, $rootSco
 
 
     $scope.orientation = {
-        tilt: 79,
-        compass: 144,
+        tilt: 114,
+        compass: 200,
         lat: 0,
         lng: 0
     }

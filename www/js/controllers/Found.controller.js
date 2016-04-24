@@ -97,7 +97,7 @@ $rootScope.isCaught=true;
 
                 // Reflow handling
                 var reflow = function() {
-                    console.log('reflow');
+                  //  console.log('reflow');
                     clientWidth = container.clientWidth;
                     clientHeight = container.clientHeight;
                     scroller.setDimensions(clientWidth, clientHeight, contentWidth, contentHeight);
