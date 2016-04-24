@@ -44,7 +44,7 @@ angular.module('MoonGrasper').factory('DeviceApi', function ($http, $q) {
       }
       setInterval(function () {
         navigator.compass.getCurrentHeading(compass.onSuccess, compass.onError);
-      }, 10);
+      }, 30);
     },
     getAngleOfView: function () {
       return {v: 75, h: 75}; //mock

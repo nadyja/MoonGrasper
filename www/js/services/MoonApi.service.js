@@ -1,52 +1,49 @@
-angular.module('MoonGrasper').factory('MoonApi', function($http, $q) {
+angular.module('MoonGrasper').factory('MoonApi', function ($http, $q) {
 
 
+  function parseMoonPosition(result) {
+    // console.log(result);
+    var data = result.data;
+    var d = new Date();
+    var date = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear() + "," + d.getHours() + ":00:00";
+    data = data.split("\n");
+    for (line in data) {
+      if (data[line].search(date) !== -1) {
 
-    function parseMoonPosition(result) {
-        // console.log(result);
-        var data = result.data;
-        var d = new Date();
-        var date = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear() + "," + d.getHours() + ":00:00";
-        data = data.split("\n");
-        for (line in data) {
-            if (data[line].search(date) !== -1) {
-
-                var arr=(data[line].split(",").slice(2));
-                arr[0]=180-parseFloat(arr[0]);
-                arr[1]=parseFloat(arr[1]);
-                arr[2]=parseFloat(arr[2]);
-                console.log(arr);
-                return arr;
-            }
-        }
-
+        var arr = (data[line].split(",").slice(2));
+        arr[0] = 180 - parseFloat(arr[0]);
+        arr[1] = parseFloat(arr[1]);
+        arr[2] = parseFloat(arr[2]);
+        console.log(arr);
+        return arr;
+      }
     }
 
+  }
 
 
-    return {
-        getMoonPosition: function(coordinates, isDebug) {
-            //return MockApi.getBundleList();
-            var d = new Date();
-            var day = d.getDate();
-            var year = d.getFullYear();
-            var month = d.getMonth() + 1;
-            var url = 'https://www.nrel.gov/midc/apps/sampa.pl?syear=' + year +
-                '&smonth=' + month +
-                '&sday=' + day +
-                '&eyear=' + year +
-                '&emonth=' + month +
-                '&eday=' + day +
-                '&step=60&stepunit=1&latitude=' + coordinates.lat +
-                '&longitude=' + coordinates.lon +
-                '&timezone=' + coordinates.timezone +
-                '&elev=0&press=835&temp=10&dut1=0.0&deltat=64.797&refract=0.5667&ozone=0.3&pwv=1.5&aod=0.07637&ba=0.85&albedo=0.2&field=3&field=4&field=5&zip=0'
-                //console.log(url);
-            if (!isDebug) return $http.get(url).then(parseMoonPosition);
+  return {
+    getMoonPosition: function (coordinates, isDebug) {
+      //return MockApi.getBundleList();
+      var d = new Date();
+      var day = d.getDate();
+      var year = d.getFullYear();
+      var month = d.getMonth() + 1;
+      var url = 'https://www.nrel.gov/midc/apps/sampa.pl?syear=' + year +
+        '&smonth=' + month +
+        '&sday=' + day +
+        '&eyear=' + year +
+        '&emonth=' + month +
+        '&eday=' + day +
+        '&step=60&stepunit=1&latitude=' + coordinates.lat +
+        '&longitude=' + coordinates.lon +
+        '&timezone=' + coordinates.timezone +
+        '&elev=0&press=835&temp=10&dut1=0.0&deltat=64.797&refract=0.5667&ozone=0.3&pwv=1.5&aod=0.07637&ba=0.85&albedo=0.2&field=3&field=4&field=5&zip=0';
+      //console.log(url);
+      if (!isDebug) return $http.get(url).then(parseMoonPosition);
 
 
-
-            var fakeAnswer = 'Date,Time,Lunar Topocentric zenith angle,Lunar Top. azimuth angle (eastward from N),Lunar Top. azimuth angle (westward from S)' + '\n\
+      var fakeAnswer = 'Date,Time,Lunar Topocentric zenith angle,Lunar Top. azimuth angle (eastward from N),Lunar Top. azimuth angle (westward from S)' + '\n\
                 4/23/2016,19:00:00,112.340454,84.465859,-95.534141' + '\n\
                 4/23/2016,20:00:00,103.528437,96.008571,-83.991429' + '\n\
                 4/23/2016,21:00:00,94.879477,107.293550,-72.706450' + '\n\
@@ -78,34 +75,44 @@ angular.module('MoonGrasper').factory('MoonApi', function($http, $q) {
                 4/24/2016,23:00:00,86.711933,122.815311,-57.184689' + '\n';
 
 
+      return mockApi({data: fakeAnswer}, 0).then(parseMoonPosition);
 
-
-
-            return mockApi({ data: fakeAnswer }, 0).then(parseMoonPosition);
-
-        },
-        getMoonPhase: function() {
-            //returns 1 to 28 (14 fullmoon)
-            return 14;
+    },
+    getMoonPhase: function () {
+      //TODO have to return one of 28 phases
+      var d = new Date;
+      var JD = Math.floor((d / 86400000) - (d.getTimezoneOffset()/1440) + 2440587.5);
+      var phase = ((JD / 29.5305902778) - 0.3033);
+      phase = Math.floor((phase - Math.floor(phase)) * 100);
+      var digit = phase % 10;
+      if (digit >= 9){
+        phase += 1;
+        if (phase >= 100){
+          phase = 0;
         }
-
+      } else {
+        phase -= digit;
+      }
+      return (Math.floor(parseFloat(phase)/100.0 * 28));
     }
 
-
-    function mockApi(obj, timeout, reject) {
-        var isSuccess = true;
-        if (!timeout) timeout = 0;
-        if (reject) isSuccess = false;
+  };
 
 
-        return $q(function(resolve, reject) {
-            setTimeout(function() {
-                if (isSuccess) {
-                    resolve(obj);
-                } else {
-                    reject(false);
-                }
-            }, timeout);
-        });
-    }
+  function mockApi(obj, timeout, reject) {
+    var isSuccess = true;
+    if (!timeout) timeout = 0;
+    if (reject) isSuccess = false;
+
+
+    return $q(function (resolve, reject) {
+      setTimeout(function () {
+        if (isSuccess) {
+          resolve(obj);
+        } else {
+          reject(false);
+        }
+      }, timeout);
+    });
+  }
 });
