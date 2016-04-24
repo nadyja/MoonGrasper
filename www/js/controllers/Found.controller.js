@@ -1,69 +1,63 @@
 angular.module('MoonGrasper').controller('FoundCtrl', function($scope, $rootScope, $ionicModal, $timeout, MoonApi, DeviceApi, $state) {
 
-$rootScope.isCaught=true;
+        $rootScope.isCaught = true;
 
+    })
+    .service('ScrollRender', function() {
+        this.render = function(content) {
+            return (function(global) {
 
+                var docStyle = document.documentElement.style;
 
+                var engine;
+                if (global.opera && Object.prototype.toString.call(opera) === '[object Opera]') {
+                    engine = 'presto';
+                } else if ('MozAppearance' in docStyle) {
+                    engine = 'gecko';
+                } else if ('WebkitAppearance' in docStyle) {
+                    engine = 'webkit';
+                } else if (typeof navigator.cpuClass === 'string') {
+                    engine = 'trident';
+                }
 
+                var vendorPrefix = {
+                    trident: 'ms',
+                    gecko: 'Moz',
+                    webkit: 'Webkit',
+                    presto: 'O'
+                }[engine];
 
+                var helperElem = document.createElement("div");
+                var undef;
 
+                var perspectiveProperty = vendorPrefix + "Perspective";
+                var transformProperty = vendorPrefix + "Transform";
 
-})
-.service('ScrollRender', function() {
-    this.render = function(content) {
-        return (function(global) {
+                if (helperElem.style[perspectiveProperty] !== undef) {
 
-            var docStyle = document.documentElement.style;
+                    return function(left, top, zoom) {
+                        content.style[transformProperty] = 'translate3d(' + (-left) + 'px,' + (-top) + 'px,0) scale(' + zoom + ')';
+                    };
 
-            var engine;
-            if (global.opera && Object.prototype.toString.call(opera) === '[object Opera]') {
-                engine = 'presto';
-            } else if ('MozAppearance' in docStyle) {
-                engine = 'gecko';
-            } else if ('WebkitAppearance' in docStyle) {
-                engine = 'webkit';
-            } else if (typeof navigator.cpuClass === 'string') {
-                engine = 'trident';
-            }
+                } else if (helperElem.style[transformProperty] !== undef) {
 
-            var vendorPrefix = {
-                trident: 'ms',
-                gecko: 'Moz',
-                webkit: 'Webkit',
-                presto: 'O'
-            }[engine];
+                    return function(left, top, zoom) {
+                        content.style[transformProperty] = 'translate(' + (-left) + 'px,' + (-top) + 'px) scale(' + zoom + ')';
+                    };
 
-            var helperElem = document.createElement("div");
-            var undef;
+                } else {
 
-            var perspectiveProperty = vendorPrefix + "Perspective";
-            var transformProperty = vendorPrefix + "Transform";
+                    return function(left, top, zoom) {
+                        content.style.marginLeft = left ? (-left / zoom) + 'px' : '';
+                        content.style.marginTop = top ? (-top / zoom) + 'px' : '';
+                        content.style.zoom = zoom || '';
+                    };
 
-            if (helperElem.style[perspectiveProperty] !== undef) {
+                }
+            })(this);
+        };
 
-                return function(left, top, zoom) {
-                    content.style[transformProperty] = 'translate3d(' + (-left) + 'px,' + (-top) + 'px,0) scale(' + zoom + ')';
-                };
-
-            } else if (helperElem.style[transformProperty] !== undef) {
-
-                return function(left, top, zoom) {
-                    content.style[transformProperty] = 'translate(' + (-left) + 'px,' + (-top) + 'px) scale(' + zoom + ')';
-                };
-
-            } else {
-
-                return function(left, top, zoom) {
-                    content.style.marginLeft = left ? (-left / zoom) + 'px' : '';
-                    content.style.marginTop = top ? (-top / zoom) + 'px' : '';
-                    content.style.zoom = zoom || '';
-                };
-
-            }
-        })(this);
-    };
-
-})
+    })
 
 .directive('zoomable', function(ScrollRender) {
     return {
@@ -97,7 +91,7 @@ $rootScope.isCaught=true;
 
                 // Reflow handling
                 var reflow = function() {
-                  //  console.log('reflow');
+                    //  console.log('reflow');
                     clientWidth = container.clientWidth;
                     clientHeight = container.clientHeight;
                     scroller.setDimensions(clientWidth, clientHeight, contentWidth, contentHeight);
@@ -179,4 +173,3 @@ $rootScope.isCaught=true;
         }
     };
 })
-

@@ -16,7 +16,7 @@
 }
 
 .info-pane {
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.5);
     bottom: 0;
     left: 0;
     width: 100%;
@@ -26,6 +26,12 @@
     h3 {
         padding: 10px 0 20px;
         color: #fff;
+        font-size: 21px;
+        .fancy-font {
+            font-family: 'Coming Soon', cursive;
+            font-size: 26px;
+            color: #FF5722;
+        }
     }
 }
 
@@ -37,12 +43,13 @@
     left: 0;
     z-index: 999;
 }
+
 .moon-visible {
+    background: rgba(0, 0, 0, 0.6);
     .view-container {
-        height: 30%;
-        bottom:0;
-        top:auto;
-        z-index:30;
-        
+        height: 40%;
+        bottom: 0;
+        top: auto;
+        z-index: 30;
     }
 }

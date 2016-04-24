@@ -2,7 +2,7 @@ angular.module('MoonGrasper').factory('DeviceApi', function($http, $q) {
     return {
         
         isDebug: function() {
-            return true;
+            //return true;
             return false;
             //helper for debugging with ionic serve
 

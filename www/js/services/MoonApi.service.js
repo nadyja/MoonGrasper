@@ -11,7 +11,12 @@ angular.module('MoonGrasper').factory('MoonApi', function($http, $q) {
         for (line in data) {
             if (data[line].search(date) !== -1) {
 
-                return (data[line].split(",").slice(2));
+                var arr=(data[line].split(",").slice(2));
+                arr[0]=180-parseFloat(arr[0]);
+                arr[1]=parseFloat(arr[1]);
+                arr[2]=parseFloat(arr[2]);
+                console.log(arr);
+                return arr;
             }
         }
 
@@ -36,7 +41,8 @@ angular.module('MoonGrasper').factory('MoonApi', function($http, $q) {
                 '&longitude=' + coordinates.lon +
                 '&timezone=' + coordinates.timezone +
                 '&elev=0&press=835&temp=10&dut1=0.0&deltat=64.797&refract=0.5667&ozone=0.3&pwv=1.5&aod=0.07637&ba=0.85&albedo=0.2&field=3&field=4&field=5&zip=0'
-           // if (!isDebug) return $http.get(url).then(parseMoonPosition);
+                //console.log(url);
+            if (!isDebug) return $http.get(url).then(parseMoonPosition);
 
 
 
