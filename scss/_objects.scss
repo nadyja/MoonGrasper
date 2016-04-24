@@ -6,7 +6,51 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    margin-left:-40px;
+    margin-left: -40px;
     margin-top: -40px;
-    z-index: 10;    
+    z-index: 10;
+}
+
+#giant-moon {
+    z-index: 20;
+    #container {
+        position: fixed;
+        display: inline;
+        top: 0;
+        right: 0;
+        bottom: 45px;
+        left: 0;
+         
+        #image-scrollable {
+            width: 100px;
+            transition: width 1.3s cubic-bezier(0.67, -0.04, 0.27, 1.55), opacity 0.1s cubic-bezier(0, 1.0, 0, 1);
+            opacity: 0.0;
+        }
+    }
+    #content {
+        position: fixed;
+        display: inline;
+        right: 0;
+        left: 0;
+        top: 0;
+         //-webkit-transform-origin: 0 0;
+        top: 50%;
+        margin-top: -50px;
+        left: 50%;
+        margin-left: -50px;
+        width: 100px;
+        transition: margin 1.3s cubic-bezier(0.67, -0.04, 0.27, 1.55);
+        transform: translate3d(0px, 0px, 0px) scale(1);
+    }
+    &.moon-visible {
+        #content {
+            margin-top: -300px;
+            margin-left: -250px;
+            transform: translate3d(0px, 0px, 0px) scale(1);
+        }
+        #container #image-scrollable {
+            width: 500px;
+            opacity: 1;
+        }
+    }
 }

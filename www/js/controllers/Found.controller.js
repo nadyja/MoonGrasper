@@ -1,16 +1,6 @@
 angular.module('MoonGrasper').controller('FoundCtrl', function($scope, $rootScope, $ionicModal, $timeout, MoonApi, DeviceApi, $state) {
 
-    $scope.getCurrentFullMoonImage = function() {
-        return 'img/hd/moon' + MoonApi.getMoonPhase() + '.png';
-    }
-
-
-
-
-
-
-
-
+$rootScope.isCaught=true;
 
 
 

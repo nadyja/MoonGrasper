@@ -1,10 +1,14 @@
 angular.module('MoonGrasper').factory('DeviceApi', function($http, $q) {
     return {
+        
+        isDebug: function() {
+        //    return true;
+            return false;
+            //helper for debugging with ionic serve
+
+        },
         initCameraBackground: function() {
-            ezar.initializeVideoOverlay(
-                function() {
-                    ezar.getBackCamera().start();
-                });
+           
         },
         initTiltListner: function(callback) {
             if (window.DeviceOrientationEvent) {
@@ -27,6 +31,7 @@ angular.module('MoonGrasper').factory('DeviceApi', function($http, $q) {
                 onSuccess: function(heading) {
                     var hdng = heading.magneticHeading;
                     callback(hdng);
+                    neverUsedCompass=false;
                 },
                 onError: function(compassError) {
                     console.log("Compass error", err);
@@ -34,10 +39,12 @@ angular.module('MoonGrasper').factory('DeviceApi', function($http, $q) {
                     ezar.getBackCamera().start();
                 },
                 options: {
-                    frequency: 10
+                    frequency: 100
                 }
             }
-            setInterval(function() { navigator.compass.getCurrentHeading(compass.onSuccess, compass.onError); }, 10);
+            setInterval(function() {
+             navigator.compass.getCurrentHeading(compass.onSuccess, compass.onError);
+              }, 10);
         },
         getAngleOfView: function() {
             return { v: 75, h: 75 }; //mock
@@ -66,6 +73,7 @@ angular.module('MoonGrasper').factory('DeviceApi', function($http, $q) {
             return resolution;
         },
         getCoordinatesAndTimezone: function() {
+            // TODO: find the real ones
             return {
                 lat: 52,
                 lon: 14,

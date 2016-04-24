@@ -1,12 +1,23 @@
 angular.module('MoonGrasper').controller('MainCtrl', function($scope,$rootScope, $ionicModal, $timeout, MoonApi, DeviceApi, $state) {
-    $rootScope.isDebug = true;
+    $rootScope.isDebug = DeviceApi.isDebug();
     $scope.debug = {};
+    $rootScope.debugBackground=$rootScope.isDebug?'background-image: url(img/bgr.jpg)':'';
+
+    $rootScope.isCaught=false;
 
 
+    $scope.getCurrentFullMoonImage = function() {
+        return 'img/hd/moon' + MoonApi.getMoonPhase() + '.png';
+    }
 
-
-
-
+$rootScope.$on('$stateChangeStart', 
+function(event, toState, toParams, fromState, fromParams, options){
+    if(toState.name=='app.fount') {
+        $rootScope.isCaught=true;
+    } else {
+        $rootScope.isCaught=false;
+    }
+})
 
 
 

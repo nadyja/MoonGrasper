@@ -73,7 +73,9 @@ angular.module('MoonGrasper').controller('SearchCtrl', function($scope, $rootSco
         var pixels = getMoonPixelPosition(delta);
         $scope.moonStyle = 'transform: translate(' + pixels.h + 'px,' + pixels.v + 'px)';
         if (isMoonInCatchingArea(delta)) {
-            $state.go('app.found')
+           
+            $state.go('app.found');
+
         }
 
     }
