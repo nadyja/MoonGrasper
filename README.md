@@ -7,11 +7,6 @@ Using Augumented Reality it lets the user find the curent position of the moon a
 
 Navigates to the curent position of the Moon and catches it to magnify and explore
 
-
-##Latest Release:
-[coming soon]
-
-
 ##Dev Requirements
 - cordova > 6.1.1
 - ionic > 1.7.14
@@ -20,7 +15,6 @@ Navigates to the curent position of the Moon and catches it to magnify and explo
 - Java SE Development Kit 7u79
 - Android Development Kit and Android Studio 
 - Android SDK >19
-
 
 ##Development:
 
