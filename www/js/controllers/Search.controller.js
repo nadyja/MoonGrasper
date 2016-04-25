@@ -2,8 +2,8 @@ angular.module('MoonGrasper').controller('SearchCtrl', function($scope, $rootSco
 
 
     $scope.orientation = {        
-        compass: 90,
-        tilt: 120,
+        compass: 340,
+        tilt: 60,
         lat: 0,
         lng: 0
     }
@@ -14,7 +14,7 @@ angular.module('MoonGrasper').controller('SearchCtrl', function($scope, $rootSco
 
     $scope.init = function() {
         $scope.moonPhase=MoonApi.getMoonPhase();
-        
+
 
         DeviceApi.getCoordinatesAndTimezone(function(coordResult) {
             MoonApi.getMoonPositionOffline(coordResult, $rootScope.isDebug).then(function(result) {
@@ -148,12 +148,16 @@ angular.module('MoonGrasper').controller('SearchCtrl', function($scope, $rootSco
     }
 
     function getMoonDelta() {
-        if ($scope.orientation.compass > 180) {
-            diffH = -($scope.orientation.compass - 180 - $scope.moon.compass)
-        } else {
-            diffH = $scope.orientation.compass - $scope.moon.compass
-        }
-        diffV = -$scope.orientation.tilt + ($scope.moon.tilt);
+        diffH =  $scope.orientation.compass - $scope.moon.compass
+        diffV = -($scope.orientation.tilt - $scope.moon.tilt);
+
+        diffH=diffH%360;
+        diffV=diffV%360;
+        if(diffH>180) diffH=180-diffH;
+        if(diffH<-180) diffH=-180-diffH;
+
+        if(diffV>180) diffV=180-diffV;
+        if(diffV<-180) diffV=-180-diffV;
 
         return {
             v: diffV,
