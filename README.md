@@ -1,11 +1,9 @@
 #Grab the Moon
 
-App created during the NASA Space Apps Challenge Hackathon in response to the challenge Book it to the Moon:
-<https://2016.spaceappschallenge.org/challenges/solar-system/book-it-to-the-moon/projects/moongrasper>
+App created during the NASA Space Apps Challenge Hackathon in response to the challenge [Book it to the Moon](https://2016.spaceappschallenge.org/challenges/solar-system/book-it-to-the-moon):
 
-Using Augumented Reality it lets the user find the curent position of the moon and then "grab" it, to explore it to their hearts content in the form of a zoomable high resolution photo of the moon in the curent phase. 
+Using Augumented Reality it lets the user find the curent position of the moon and then "grab" it, to explore it to their hearts content in the form of a zoomable high-resolution photo of the moon in its curent phase. 
 
-[presentation](https://docs.google.com/presentation/d/12l8U7pX06GtQjPB7sKPnIOHyuO3L4hp8N_cIqjtpNEs/edit?usp=sharing)
 ##Current release
 
 <https://github.com/nmietkiewicz/MoonGrasper/releases/tag/1.1> (pre-release for android)
@@ -35,3 +33,8 @@ To deploy on phone
 - <https://github.com/mourner/suncalc>
 - <http://www.ezartech.com/>
 - <http://ionicframework.com/>
+
+##Links
+- [solution page](https://2016.spaceappschallenge.org/challenges/solar-system/book-it-to-the-moon/projects/moongrasper)
+- [presentation](https://docs.google.com/presentation/d/12l8U7pX06GtQjPB7sKPnIOHyuO3L4hp8N_cIqjtpNEs/edit?usp=sharing)
+
