@@ -5,6 +5,8 @@ App created during the NASA Space Apps Challenge Hackathon in response to the ch
 
 Using Augumented Reality it lets the user find the curent position of the moon and then "grab" it, to explore it to their hearts content in the form of a zoomable high resolution photo of the moon in the curent phase. 
 
+Navigates to the curent position of the Moon and catches it to magnify and explore
+
 
 ##Latest Release:
 [coming soon]
@@ -14,7 +16,7 @@ Using Augumented Reality it lets the user find the curent position of the moon a
 - cordova > 6.1.1
 - ionic > 1.7.14
 
-###for android: 
+####for android: 
 - Java SE Development Kit 7u79
 - Android Development Kit and Android Studio 
 - Android SDK >19
