@@ -10,7 +10,8 @@ Using Augumented Reality it lets the user find the curent position of the moon a
 
 <https://github.com/nmietkiewicz/MoonGrasper/releases/tag/1.1> (pre-release)
 
-##Dev Requirements
+##Development:
+#####requirements
 - cordova > 6.1.1
 - ionic > 1.7.14
 
@@ -19,7 +20,6 @@ Using Augumented Reality it lets the user find the curent position of the moon a
 - Android Development Kit and Android Studio 
 - Android SDK >19
 
-##Development:
 
 To view in web preview
 
