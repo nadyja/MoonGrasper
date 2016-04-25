@@ -31,15 +31,17 @@ angular.module('MoonGrasper').factory('MoonApi', function ($http, $q) {
   return {
 
     getMoonPositionOffline: function( coordinates,isDebug) {
+      //TODO: can do this synchroneously now - mockAPI to destroy
       var today = new Date();
       var moonPosition=SunCalc.getMoonPosition(today, coordinates.lat, coordinates.lon);
       return mockApi({
         tilt:rad2deg(moonPosition.altitude), 
         compass: rad2deg(moonPosition.azimuth) +180
       }, 0); 
-    }
+    },
 
     getMoonPosition: function (coordinates, isDebug) {
+      //deprecated
       var day = d.getDate();
       var year = d.getFullYear();
       var month = d.getMonth() + 1;
