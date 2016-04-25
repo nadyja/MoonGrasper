@@ -7,7 +7,7 @@ angular.module('MoonGrasper').controller('MainCtrl', function ($scope, $rootScop
 
 
   $scope.getCurrentFullMoonImage = function () {
-    return 'img/hd/moon' + MoonApi.getMoonPhase() + '.png';
+    return 'img/hd/moon.png';
   };
 
   $rootScope.$on('$stateChangeStart',

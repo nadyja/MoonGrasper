@@ -9809,8 +9809,7 @@ body {
   color: #fff;
   font-size: 10px;
   padding: 10px;
-  z-index: 999;
-  display: none; }
+  z-index: 999; }
 
 .finder-contents h3.logo-text {
   text-transform: uppercase;
@@ -9831,6 +9830,62 @@ body {
   margin-left: -40px;
   margin-top: -40px;
   z-index: 40; }
+  #moon.phase1 {
+    background-image: url(../img/sm/moon-1.png); }
+  #moon.phase2 {
+    background-image: url(../img/sm/moon-2.png); }
+  #moon.phase3 {
+    background-image: url(../img/sm/moon-3.png); }
+  #moon.phase4 {
+    background-image: url(../img/sm/moon-4.png); }
+  #moon.phase5 {
+    background-image: url(../img/sm/moon-5.png); }
+  #moon.phase6 {
+    background-image: url(../img/sm/moon-6.png); }
+  #moon.phase7 {
+    background-image: url(../img/sm/moon-7.png); }
+  #moon.phase8 {
+    background-image: url(../img/sm/moon-8.png); }
+  #moon.phase9 {
+    background-image: url(../img/sm/moon-9.png); }
+  #moon.phase10 {
+    background-image: url(../img/sm/moon-10.png); }
+  #moon.phase11 {
+    background-image: url(../img/sm/moon-11.png); }
+  #moon.phase12 {
+    background-image: url(../img/sm/moon-12.png); }
+  #moon.phase13 {
+    background-image: url(../img/sm/moon-13.png); }
+  #moon.phase14 {
+    background-image: url(../img/sm/moon-14.png); }
+  #moon.phase15 {
+    background-image: url(../img/sm/moon-15.png); }
+  #moon.phase16 {
+    background-image: url(../img/sm/moon-16.png); }
+  #moon.phase17 {
+    background-image: url(../img/sm/moon-17.png); }
+  #moon.phase18 {
+    background-image: url(../img/sm/moon-18.png); }
+  #moon.phase19 {
+    background-image: url(../img/sm/moon-19.png); }
+  #moon.phase20 {
+    background-image: url(../img/sm/moon-20.png); }
+  #moon.phase21 {
+    background-image: url(../img/sm/moon-21.png); }
+  #moon.phase22 {
+    background-image: url(../img/sm/moon-22.png); }
+  #moon.phase23 {
+    background-image: url(../img/sm/moon-23.png); }
+  #moon.phase24 {
+    background-image: url(../img/sm/moon-24.png); }
+  #moon.phase25 {
+    background-image: url(../img/sm/moon-25.png); }
+  #moon.phase26 {
+    background-image: url(../img/sm/moon-26.png); }
+  #moon.phase27 {
+    background-image: url(../img/sm/moon-27.png); }
+  #moon.phase28 {
+    background-image: url(../img/sm/moon-28.png); }
 
 #giant-moon {
   z-index: 20; }

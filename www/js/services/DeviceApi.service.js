@@ -27,6 +27,7 @@ angular.module('MoonGrasper').factory('DeviceApi', function ($http, $q) {
       }
     },
     initCompassListner: function (callback) {
+      if(!navigator.compass) return;
       var compass = {
         onSuccess: function (heading) {
           var hdng = heading.magneticHeading;

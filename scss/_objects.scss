@@ -9,7 +9,39 @@
     margin-left: -40px;
     margin-top: -40px;
     z-index: 40;
+    &.phase1 {background-image: url(../img/sm/moon-1.png);}
+    &.phase2 {background-image: url(../img/sm/moon-2.png);}
+    &.phase3 {background-image: url(../img/sm/moon-3.png);}
+    &.phase4 {background-image: url(../img/sm/moon-4.png);}
+    &.phase5 {background-image: url(../img/sm/moon-5.png);}
+    &.phase6 {background-image: url(../img/sm/moon-6.png);}
+    &.phase7 {background-image: url(../img/sm/moon-7.png);}
+    &.phase8 {background-image: url(../img/sm/moon-8.png);}
+    &.phase9 {background-image: url(../img/sm/moon-9.png);}
+    
+    &.phase10 {background-image: url(../img/sm/moon-10.png);}
+    &.phase11 {background-image: url(../img/sm/moon-11.png);}
+    &.phase12 {background-image: url(../img/sm/moon-12.png);}
+    &.phase13 {background-image: url(../img/sm/moon-13.png);}
+    &.phase14 {background-image: url(../img/sm/moon-14.png);}
+    &.phase15 {background-image: url(../img/sm/moon-15.png);}
+    &.phase16 {background-image: url(../img/sm/moon-16.png);}
+    &.phase17 {background-image: url(../img/sm/moon-17.png);}
+    &.phase18 {background-image: url(../img/sm/moon-18.png);}
+    &.phase19 {background-image: url(../img/sm/moon-19.png);}
+
+    &.phase20 {background-image: url(../img/sm/moon-20.png);}
+    &.phase21 {background-image: url(../img/sm/moon-21.png);}
+    &.phase22 {background-image: url(../img/sm/moon-22.png);}
+    &.phase23 {background-image: url(../img/sm/moon-23.png);}
+    &.phase24 {background-image: url(../img/sm/moon-24.png);}
+    &.phase25 {background-image: url(../img/sm/moon-25.png);}
+    &.phase26 {background-image: url(../img/sm/moon-26.png);}
+    &.phase27 {background-image: url(../img/sm/moon-27.png);}
+    &.phase28 {background-image: url(../img/sm/moon-28.png);}
 }
+
+
 
 #giant-moon {
     z-index: 20;
