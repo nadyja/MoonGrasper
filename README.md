@@ -35,6 +35,6 @@ To deploy on phone
 - <http://ionicframework.com/>
 
 ##Links
-- [solution page](https://2016.spaceappschallenge.org/challenges/solar-system/book-it-to-the-moon/projects/moongrasper)
-- [presentation](https://docs.google.com/presentation/d/12l8U7pX06GtQjPB7sKPnIOHyuO3L4hp8N_cIqjtpNEs/edit?usp=sharing)
+- [Space Apps solution page](https://2016.spaceappschallenge.org/challenges/solar-system/book-it-to-the-moon/projects/moongrasper)
+- [Pitch presentation](https://docs.google.com/presentation/d/12l8U7pX06GtQjPB7sKPnIOHyuO3L4hp8N_cIqjtpNEs/edit?usp=sharing)
 
