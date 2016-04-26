@@ -6,7 +6,9 @@ Using Augumented Reality it lets the user find the curent position of the moon a
 
 ##Current release
 
-<https://github.com/nmietkiewicz/MoonGrasper/releases/tag/1.1> (pre-release for android)
+<https://github.com/nmietkiewicz/MoonGrasper/releases/tag/1.1> (pre-release for Android)
+
+[how to install APK on Android](http://airmore.com/install-apk-files-on-android.html)
 
 ##Development:
 #####requirements
