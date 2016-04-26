@@ -2,7 +2,7 @@
 
 App created during the NASA Space Apps Challenge Hackathon in response to the challenge [Book it to the Moon](https://2016.spaceappschallenge.org/challenges/solar-system/book-it-to-the-moon):
 
-Using Augumented Reality it lets the user find the curent position of the moon and then "grab" it, to explore it to their hearts content in the form of a zoomable high-resolution photo of the moon in its curent phase. 
+Using Augmented Reality it lets the user find the curent position of the moon and then "grab" it, to explore it to their hearts content in the form of a zoomable high-resolution photo of the moon in its curent phase. 
 
 ##Current release
 
