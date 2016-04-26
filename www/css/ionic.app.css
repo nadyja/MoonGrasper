@@ -9888,6 +9888,7 @@ body {
     background-image: url(../img/sm/moon-28.png); }
 
 #giant-moon {
+  display: none;
   z-index: 20; }
   #giant-moon #container {
     position: fixed;

@@ -34,10 +34,10 @@ angular.module('MoonGrasper').factory('MoonApi', function ($http, $q) {
       //TODO: can do this synchroneously now - mockAPI to destroy
       var today = new Date();
       var moonPosition=SunCalc.getMoonPosition(today, coordinates.lat, coordinates.lon);
-      return mockApi({
+      return {
         tilt:rad2deg(moonPosition.altitude), 
         compass: rad2deg(moonPosition.azimuth) +180
-      }, 0); 
+      }; 
     },
 
     getMoonPosition: function (coordinates, isDebug) {

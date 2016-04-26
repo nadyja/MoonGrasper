@@ -2,8 +2,8 @@ angular.module('MoonGrasper').controller('SearchCtrl', function($scope, $rootSco
 
 
     $scope.orientation = {        
-        compass: 340,
-        tilt: 60,
+        compass: 0,
+        tilt: 50,
         lat: 0,
         lng: 0
     }
@@ -15,30 +15,12 @@ angular.module('MoonGrasper').controller('SearchCtrl', function($scope, $rootSco
     $scope.init = function() {
         $scope.moonPhase=MoonApi.getMoonPhase();
 
-
         DeviceApi.getCoordinatesAndTimezone(function(coordResult) {
-            MoonApi.getMoonPositionOffline(coordResult, $rootScope.isDebug).then(function(result) {
-                $scope.moon = result;
+                $scope.moon = MoonApi.getMoonPositionOffline(coordResult);
+                //$scope.moon = { compass: 355, tilt: 90 }
                 $rootScope.debug(0, 'moon position (compass, tilt): ', $scope.moon.compass, $scope.moon.tilt);
                 redrawPositions();
                 $scope.initListeners();
-                $rootScope.debug(9, 'connection success');  
-            }, function(err) {
-                //Moon api returned error (possibly nrel.gov dead)
-                $scope.moon = {
-                  compass: 0,
-                  tilt: 90
-                }
-                $rootScope.debug(0, 'moon position (compass, tilt): ', $scope.moon.compass, $scope.moon.tilt);
-                $rootScope.debug(9, 'connection error');        
-                redrawPositions();
-                $scope.initListeners();
-            })
-
-
-           
-
-
         });
 
 
@@ -100,6 +82,7 @@ angular.module('MoonGrasper').controller('SearchCtrl', function($scope, $rootSco
         var h = delta.h;
 
         if (h === 0 && v === 0) {
+
             return null
         } else if (v === 0) {
             if (h > 0) {
@@ -107,16 +90,19 @@ angular.module('MoonGrasper').controller('SearchCtrl', function($scope, $rootSco
             } else {
                 return -270
             }
-        } else if (h === 0) {
+        } 
+/*
+        else if (h === 0) {
             if (v > 0) {
                 return 0
             } else {
                 return -180
             }
         }
-
+*/
         var radians = Math.atan(delta.h / delta.v);
         var deg = Math.abs(radians * 180 / Math.PI);
+
 
         //clockwise rotation
         if (h > 0 && v > 0) {
@@ -126,7 +112,7 @@ angular.module('MoonGrasper').controller('SearchCtrl', function($scope, $rootSco
         } else if (h < 0 && v < 0) {
             return -(180 + deg)
         } else if (h < 0 && v > 0) {
-            return -(270 + deg)
+            return deg;
         }
     }
 
@@ -137,6 +123,8 @@ angular.module('MoonGrasper').controller('SearchCtrl', function($scope, $rootSco
 
         var pixelsV = resolution.v * -delta.v / theta.v;
         var pixelsH = resolution.h * -delta.h / theta.h;
+
+//        $rootScope.debug(13, 'resolution (h, v): ', resolution.h, resolution.v);
 
         var pixels = {
             v: pixelsV,
@@ -151,13 +139,16 @@ angular.module('MoonGrasper').controller('SearchCtrl', function($scope, $rootSco
         diffH =  $scope.orientation.compass - $scope.moon.compass
         diffV = -($scope.orientation.tilt - $scope.moon.tilt);
 
+        /* should never happen, but checking anyways */
         diffH=diffH%360;
         diffV=diffV%360;
-        if(diffH>180) diffH=180-diffH;
-        if(diffH<-180) diffH=-180-diffH;
 
-        if(diffV>180) diffV=180-diffV;
-        if(diffV<-180) diffV=-180-diffV;
+
+        if(diffH>180) diffH=360-diffH;
+        if(diffH<-180) diffH=diffH+360;
+
+        if(diffV>180) diffV=360-diffV;
+        if(diffV<-180) diffV=-360-diffV;
 
         return {
             v: diffV,
@@ -165,5 +156,10 @@ angular.module('MoonGrasper').controller('SearchCtrl', function($scope, $rootSco
         }
     }
 
-
+    $scope.navigate=function(dir, step) {
+        var size=5;
+        if(dir==1) $scope.orientation.compass=$scope.orientation.compass+step*size;
+        else $scope.orientation.tilt=$scope.orientation.tilt+step*size;
+          redrawPositions();
+    }
 })
