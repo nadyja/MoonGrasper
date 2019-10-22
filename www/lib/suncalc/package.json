@@ -42,7 +42,7 @@
   "dependencies": {},
   "description": "A tiny JavaScript library for calculating sun/moon positions and phases.",
   "devDependencies": {
-    "eslint": "^1.9.0",
+    "eslint": "^6.5.1",
     "eslint-config-mourner": "^1.0.1",
     "tap": "^2.2.0"
   },
